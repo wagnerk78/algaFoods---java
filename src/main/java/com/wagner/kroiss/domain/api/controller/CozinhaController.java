@@ -1,8 +1,11 @@
 package com.wagner.kroiss.domain.api.controller;
 
 
+import com.wagner.kroiss.domain.exceptions.EntidadeEmUsoException;
+import com.wagner.kroiss.domain.exceptions.EntidadeNaoEncontrada;
 import com.wagner.kroiss.domain.model.Cozinha;
 import com.wagner.kroiss.domain.repository.CozinhaRepository;
+import com.wagner.kroiss.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,6 +23,10 @@ public class CozinhaController {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
+
+
+    @Autowired
+    private CadastroCozinhaService cadastroCozinhaService;
 
     @GetMapping
     public List<Cozinha> listar() {
@@ -40,7 +47,7 @@ public class CozinhaController {
 
     @PostMapping
     public  void adicionar(@RequestBody Cozinha cozinha) {
-        cozinhaRepository.salvar(cozinha);
+        cadastroCozinhaService.salvar(cozinha);
     }
 
 
@@ -65,16 +72,16 @@ public class CozinhaController {
     @DeleteMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> remover(@PathVariable Long cozinhaId) {
         try {
-            Cozinha cozinhaAtual = cozinhaRepository.buscar(cozinhaId);
+            cadastroCozinhaService.excluir(cozinhaId);
 
-            if (cozinhaAtual != null) {
-                cozinhaRepository.remover(cozinhaAtual);
-                return ResponseEntity.noContent().build();
-            }
+                return ResponseEntity.ok().build();
 
-            return ResponseEntity.notFound().build();
-        } catch (DataIntegrityViolationException e) {
+
+//            return ResponseEntity.notFound().build();
+        } catch (EntidadeEmUsoException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (EntidadeNaoEncontrada e) {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
 

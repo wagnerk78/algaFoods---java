@@ -4,6 +4,7 @@ import com.wagner.kroiss.domain.model.Cozinha;
 import com.wagner.kroiss.domain.repository.CozinhaRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,14 +29,20 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 
     @Override
     @Transactional
-    public void salvar(Cozinha cozinha) {
+    public Cozinha salvar(Cozinha cozinha) {
         manager.merge(cozinha);
+        return cozinha;
     }
 
     @Override
     @Transactional
-    public void remover(Cozinha cozinha) {
-        cozinha = buscar(cozinha.getId());
+    public void remover(Long id) {
+        Cozinha cozinha = buscar(id);
+
+        if (cozinha == null) {
+            throw new EmptyResultDataAccessException(1);
+
+        }
         manager.remove(cozinha);
     }
 }
