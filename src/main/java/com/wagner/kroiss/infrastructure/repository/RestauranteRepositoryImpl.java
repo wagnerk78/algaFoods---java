@@ -1,6 +1,5 @@
 package com.wagner.kroiss.infrastructure.repository;
 
-import com.wagner.kroiss.domain.model.Cozinha;
 import com.wagner.kroiss.domain.model.Restaurante;
 import com.wagner.kroiss.domain.repository.RestauranteRepository;
 import jakarta.persistence.EntityManager;
@@ -29,8 +28,9 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
 
     @Override
     @Transactional
-    public void salvar(Restaurante restaurante) {
+    public Restaurante salvar(Restaurante restaurante) {
         manager.merge(restaurante);
+        return restaurante;
     }
 
     @Override

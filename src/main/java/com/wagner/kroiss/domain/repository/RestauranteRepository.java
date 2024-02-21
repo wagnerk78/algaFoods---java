@@ -1,6 +1,5 @@
 package com.wagner.kroiss.domain.repository;
 
-import com.wagner.kroiss.domain.model.Cozinha;
 import com.wagner.kroiss.domain.model.Restaurante;
 
 import java.util.List;
@@ -10,7 +9,7 @@ public interface RestauranteRepository {
 
     List<Restaurante> listar();
     Restaurante buscar(Long id);
-    void salvar(Restaurante restaurante);
+    Restaurante salvar(Restaurante restaurante);
     void remover(Restaurante restaurante);
 
 }
