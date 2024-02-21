@@ -5,6 +5,7 @@ import com.wagner.kroiss.domain.exceptions.EntidadeNaoEncontrada;
 import com.wagner.kroiss.domain.model.Restaurante;
 import com.wagner.kroiss.domain.repository.RestauranteRepository;
 import com.wagner.kroiss.domain.service.CadastroRestauranteService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,6 @@ public class RestauranteController {
 
 
     @PostMapping
-
     public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante) {
         try {
 
@@ -54,4 +54,28 @@ public class RestauranteController {
         }
 
     }
+
+
+    @PutMapping("/{restauranteId}")
+    public ResponseEntity<?> atualizar(@PathVariable Long restauranteId,
+                                       @RequestBody Restaurante restaurante) {
+        try {
+            Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
+
+            if (restauranteAtual != null) {
+                BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+
+                restauranteAtual = cadastroRestauranteService.salvar(restauranteAtual);
+                return ResponseEntity.ok(restauranteAtual);
+            }
+
+            return ResponseEntity.notFound().build();
+
+        } catch (EntidadeNaoEncontrada e) {
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
+
 }
