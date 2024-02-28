@@ -1,11 +1,10 @@
 package com.wagner.kroiss.infrastructure.repository;
 
 import com.wagner.kroiss.domain.model.Cidade;
-import com.wagner.kroiss.domain.model.Cozinha;
 import com.wagner.kroiss.domain.repository.CidadeRepository;
-import com.wagner.kroiss.domain.repository.CozinhaRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,14 +29,19 @@ public class CidadeRepositoryImpl implements CidadeRepository {
 
     @Override
     @Transactional
-    public void salvar(Cidade cidade) {
+    public Cidade salvar(Cidade cidade) {
         manager.merge(cidade);
+        return cidade;
     }
 
     @Override
     @Transactional
-    public void remover(Cidade cidade) {
-        cidade = buscar(cidade.getId());
+    public void remover(Long id) {
+        Cidade cidade = buscar(id);
+
+        if (cidade == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
         manager.remove(cidade);
     }
 }

@@ -1,35 +1,33 @@
 package com.wagner.kroiss.domain.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
+
+
 @Entity
+@NoArgsConstructor
 public class Cidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Cidade cidade)) return false;
-        return Objects.equals(getId(), cidade.getId()) && Objects.equals(getNome(), cidade.getNome());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getNome());
-    }
-
-    public Cidade(Long id, String nome) {
-        this.id = id;
-        this.nome = nome;
-    }
-
     @Column(nullable = false)
     private String nome;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Estado estado;
+
+    public Cidade(Long id, String nome, Estado estado) {        this.id = id;
+        this.nome = nome;
+        this.estado = estado;
+    }
+
 
     public Long getId() {
         return id;
@@ -47,9 +45,6 @@ public class Cidade {
         this.nome = nome;
     }
 
-    @ManyToOne
-    private Estado estado;
-
     public Estado getEstado() {
         return estado;
     }
@@ -58,9 +53,16 @@ public class Cidade {
         this.estado = estado;
     }
 
-    public Cidade(Long id, String nome, Estado estado) {
-        this.id = id;
-        this.nome = nome;
-        this.estado = estado;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cidade cidade)) return false;
+        return Objects.equals(getId(), cidade.getId()) && Objects.equals(getNome(), cidade.getNome()) && Objects.equals(getEstado(), cidade.getEstado());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getNome(), getEstado());
     }
 }
