@@ -2,8 +2,8 @@ insert into cozinha (id, nome) values (1, "Tailandesa");
 insert into cozinha (id, nome) values (2, "Indiana");
 insert into cozinha (id, nome) values (3, "Brasileira");
 
-insert into restaurante (nome_rest, taxa_frete, cozinha_id) values ("SidResto", 5.09, 1);
-insert into restaurante (nome_rest, taxa_frete, cozinha_id) values ("MagResto", 7.05, 1);
+insert into restaurante (nome_rest, taxa_frete, cozinha_id) values ("SidResto", 0, 1);
+insert into restaurante (nome_rest, taxa_frete, cozinha_id) values ("MagResto", 0, 1);
 insert into restaurante (nome_rest, taxa_frete, cozinha_id) values ("BKResto", 14.05, 2);
 
 insert into estado (id, nome) values (1, 'Minas Gerais');
