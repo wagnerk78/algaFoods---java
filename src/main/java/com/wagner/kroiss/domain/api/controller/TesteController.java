@@ -4,12 +4,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import com.wagner.kroiss.domain.model.Cozinha;
 import com.wagner.kroiss.domain.model.Restaurante;
 import com.wagner.kroiss.domain.repository.CozinhaRepository;
 import com.wagner.kroiss.domain.repository.RestauranteRepository;
-import com.wagner.kroiss.infrastructure.Specifications.RestauranteComFreteGratisSpec;
-import com.wagner.kroiss.infrastructure.Specifications.RestauranteComNomeSemelhanteSpec;
+import com.wagner.kroiss.infrastructure.Specifications.RestaurantesSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,10 +76,10 @@ public class TesteController {
 
     @GetMapping("/restaurantes/com-frete-gratis")
     public List<Restaurante> restaurantesComFreteGratis(String nome){
-        var comFreteGratis = new RestauranteComFreteGratisSpec();
-        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 
-        return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+
+        return restauranteRepository.findAll(RestaurantesSpecs.comFreteGratis()
+                .and(RestaurantesSpecs.comNomeSemelhante(nome)));
     }
 
 }

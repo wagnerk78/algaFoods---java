@@ -7,7 +7,9 @@ import java.util.List;
 
 
 import com.wagner.kroiss.domain.model.Restaurante;
+import com.wagner.kroiss.domain.repository.RestauranteRepository;
 import com.wagner.kroiss.domain.repository.RestauranteRepositoryQueries;
+import com.wagner.kroiss.infrastructure.Specifications.RestaurantesSpecs;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -15,6 +17,8 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -24,6 +28,9 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 
     @PersistenceContext
     private EntityManager manager;
+
+    @Autowired @Lazy
+    private RestauranteRepository restauranteRepository;
 
     @Override
     public List<Restaurante> find(String nome,
@@ -82,6 +89,12 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 //        parametros.forEach((chave, valor) -> query.setParameter(chave, valor));
 //
 //        return query.getResultList();
+    }
+
+    @Override
+    public List<Restaurante> findComFreteGratis(String nome) {
+        return restauranteRepository.findAll(RestaurantesSpecs.comFreteGratis()
+                .and(RestaurantesSpecs.comNomeSemelhante(nome)));
     }
 
 }
