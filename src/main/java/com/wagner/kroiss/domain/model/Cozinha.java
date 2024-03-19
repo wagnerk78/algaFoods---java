@@ -1,7 +1,10 @@
 package com.wagner.kroiss.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -15,6 +18,10 @@ public class Cozinha {
 
     @Column(nullable = false, unique = true)
     private String nome;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "cozinha")
+    private List<Restaurante> restaurantes = new ArrayList<>();
 
 
     public Long getId() {
