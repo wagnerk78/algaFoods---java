@@ -1,9 +1,6 @@
 package com.wagner.kroiss.domain.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.*;
 import lombok.Data;
 
 @Data

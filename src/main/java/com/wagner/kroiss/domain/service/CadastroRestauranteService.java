@@ -1,7 +1,6 @@
 package com.wagner.kroiss.domain.service;
 
-import com.wagner.kroiss.domain.exceptions.EntidadeEmUsoException;
-import com.wagner.kroiss.domain.exceptions.EntidadeNaoEncontrada;
+import com.wagner.kroiss.domain.exception.RestauranteNaoEncontradoException;
 import com.wagner.kroiss.domain.model.Cozinha;
 import com.wagner.kroiss.domain.model.Restaurante;
 import com.wagner.kroiss.domain.repository.CozinhaRepository;
@@ -20,36 +19,21 @@ public class CadastroRestauranteService {
     private RestauranteRepository restauranteRepository;
 
     @Autowired
-    private CozinhaRepository cozinhaRepository;
+    private CadastroCozinhaService cadastroCozinha;
 
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
-        Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
 
-        if (cozinha.isEmpty()) {
-            throw new EntidadeNaoEncontrada(
-                    String.format("Não existe uma cozinha com código: %d.", cozinhaId));
-        }
+        Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
 
-        restaurante.setCozinha(cozinha.get());
+        restaurante.setCozinha(cozinha);
 
         return restauranteRepository.save(restaurante);
     }
 
-    public void excluir(Long restauranteId) {
-        try {
-            restauranteRepository.deleteById(restauranteId);
-
-        } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontrada (
-                    String.format("Não existe uma cozinha com esse código %d", restauranteId)
-            );
-        }
-
-        catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(
-                    String.format("Cozinha de código %d não pode ser removida, pois está em uso", restauranteId));
-        }
-
+    public Restaurante buscarOuFalhar(Long restauranteId) {
+        return restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
     }
+
 }

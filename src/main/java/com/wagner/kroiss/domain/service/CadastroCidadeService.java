@@ -1,9 +1,11 @@
 package com.wagner.kroiss.domain.service;
 
 
-import com.wagner.kroiss.domain.exceptions.EntidadeEmUsoException;
-import com.wagner.kroiss.domain.exceptions.EntidadeNaoEncontrada;
+import com.wagner.kroiss.domain.exception.CidadeNaoEncontradaException;
+import com.wagner.kroiss.domain.exception.EntidadeEmUsoException;
+import com.wagner.kroiss.domain.exception.EntidadeNaoEncontradaException;
 import com.wagner.kroiss.domain.model.Cidade;
+import com.wagner.kroiss.domain.model.Estado;
 import com.wagner.kroiss.domain.repository.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,28 +15,41 @@ import org.springframework.stereotype.Service;
 @Service
 public class CadastroCidadeService {
 
+    private static final String MSG_CIDADE_EM_USO
+            = "Cidade de código %d não pode ser removida, pois está em uso";
+
     @Autowired
     private CidadeRepository cidadeRepository;
 
-    public Cidade salvar(Cidade cidade) {
-        return  cidadeRepository.save(cidade);
-    }
+    @Autowired
+    private CadastroEstadoService cadastroEstado;
 
+    public Cidade salvar(Cidade cidade) {
+        Long estadoId = cidade.getEstado().getId();
+
+        Estado estado = cadastroEstado.buscarOuFalhar(estadoId);
+
+        cidade.setEstado(estado);
+
+        return cidadeRepository.save(cidade);
+    }
 
     public void excluir(Long cidadeId) {
         try {
             cidadeRepository.deleteById(cidadeId);
 
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontrada (
-                    String.format("Não existe uma cidade com esse código %d", cidadeId)
-            );
-        }
+            throw new CidadeNaoEncontradaException(cidadeId);
 
-        catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
-                    String.format("Cidade de código %d não pode ser removida, pois está em uso", cidadeId));
+                    String.format(MSG_CIDADE_EM_USO, cidadeId));
         }
-
     }
+
+    public Cidade buscarOuFalhar(Long cidadeId) {
+        return cidadeRepository.findById(cidadeId)
+                .orElseThrow(() -> new CidadeNaoEncontradaException(cidadeId));
+    }
+
 }
