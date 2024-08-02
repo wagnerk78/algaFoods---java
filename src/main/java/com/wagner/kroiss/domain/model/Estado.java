@@ -1,6 +1,11 @@
 package com.wagner.kroiss.domain.model;
 
+import com.wagner.kroiss.Groups;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import java.util.Objects;
 
@@ -8,12 +13,13 @@ import java.util.Objects;
 @Entity
 public class Estado {
 
-
+    @NotNull(groups = Groups.EstadoId.class)
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 

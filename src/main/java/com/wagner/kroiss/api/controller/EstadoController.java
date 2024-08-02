@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,13 +34,13 @@ public class EstadoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Estado adicionar(@RequestBody Estado estado) {
+    public Estado adicionar(@RequestBody @Valid Estado estado) {
         return cadastroEstado.salvar(estado);
     }
 
     @PutMapping("/{estadoId}")
     public Estado atualizar(@PathVariable Long estadoId,
-                            @RequestBody Estado estado) {
+                            @RequestBody  @Valid Estado estado) {
         Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
 
         BeanUtils.copyProperties(estado, estadoAtual, "id");
