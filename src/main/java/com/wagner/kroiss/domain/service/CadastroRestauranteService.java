@@ -39,6 +39,22 @@ public class CadastroRestauranteService {
     }
 
 
+    @Transactional
+    public void ativar(Long restauranteId){
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+
+        restauranteAtual.ativar();
+    }
+
+
+    @Transactional
+    public void inativar(Long restauranteId){
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+
+        restauranteAtual.inativar();
+    }
+
+
     public Restaurante buscarOuFalhar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
@@ -49,6 +65,7 @@ public class CadastroRestauranteService {
     public void excluir(Long restauranteId) {
         try {
             restauranteRepository.deleteById(restauranteId);
+            restauranteRepository.flush();
 
         } catch (EmptyResultDataAccessException e) {
             throw new CidadeNaoEncontradaException(restauranteId);
