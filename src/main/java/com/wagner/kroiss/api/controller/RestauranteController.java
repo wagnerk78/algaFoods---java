@@ -6,6 +6,7 @@ import com.wagner.kroiss.api.assembler.RestauranteInputDisassembler;
 import com.wagner.kroiss.api.assembler.RestauranteModelAssembler;
 import com.wagner.kroiss.api.model.RestauranteModel;
 import com.wagner.kroiss.api.model.input.RestauranteInput;
+import com.wagner.kroiss.domain.exception.CidadeNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.CozinhaNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.NegocioException;
 import com.wagner.kroiss.domain.model.Restaurante;
@@ -52,7 +53,7 @@ public class RestauranteController {
             Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
     }
@@ -66,7 +67,7 @@ public class RestauranteController {
             restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
     }

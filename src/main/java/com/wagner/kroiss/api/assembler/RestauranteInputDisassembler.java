@@ -1,6 +1,7 @@
 package com.wagner.kroiss.api.assembler;
 
 import com.wagner.kroiss.api.model.input.RestauranteInput;
+import com.wagner.kroiss.domain.model.Cidade;
 import com.wagner.kroiss.domain.model.Cozinha;
 import com.wagner.kroiss.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
@@ -21,6 +22,10 @@ public class RestauranteInputDisassembler {
         // Para evitar org.hibernate.HibernateException: identifier of an instance of
         // com.algaworks.algafood.domain.model.Cozinha was altered from 1 to 2
         restaurante.setCozinha(new Cozinha());
+
+        if (restaurante.getEndereco() != null) {
+            restaurante.getEndereco().setCidade(new Cidade());
+        }
 
         modelMapper.map(restauranteInput, restaurante);
     }
