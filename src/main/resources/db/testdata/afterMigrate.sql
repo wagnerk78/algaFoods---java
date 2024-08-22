@@ -45,7 +45,7 @@ insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_a
 insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro, ativo) values (3, 'Italiano Express', 7.0, 2, utc_timestamp, utc_timestamp, 2, '38400-888', 'Avenida Brasil', '1500', 'Jardim América', 1);
 insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro, ativo) values (4, 'Sushi Place', 12.0, 3, utc_timestamp, utc_timestamp, 3, '38400-777', 'Rua das Flores', '200', 'Bela Vista', 1);
 insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro, ativo) values (5, 'Burger House', 5.5, 4, utc_timestamp, utc_timestamp, 4, '38400-666', 'Avenida Central', '500', 'Centro', 1);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro, ativo) values (6, 'Veggie Delight', 8.0, 1, utc_timestamp, utc_timestamp, 5, '38400-555', 'Rua Verde', '300', 'Parque das Árvores', 1);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro, ativo) values (6, 'Veggie Delight', 8.0, 1, utc_timestamp, utc_timestamp, 5, '38400-555', 'Rua Verde', '300', 'Parque das Árvores', 1  );
 
 insert into forma_pagamento (id, descricao) values (1, 'Cartão de crédito');
 insert into forma_pagamento (id, descricao) values (2, 'Cartão de débito');
@@ -70,3 +70,6 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('T-B
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, 1, 5);
 
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
+
+
+insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
