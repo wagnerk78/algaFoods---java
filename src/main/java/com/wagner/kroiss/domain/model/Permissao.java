@@ -17,6 +17,9 @@ public class Permissao {
 
     private String descricao;
 
+    public Permissao() {
+    }
+
     public Permissao(Long id) {
         this.id = id;
     }

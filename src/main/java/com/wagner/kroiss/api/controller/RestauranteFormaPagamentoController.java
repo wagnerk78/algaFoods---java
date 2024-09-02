@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.wagner.kroiss.api.assembler.FormaPagamentoModelAssembler;
 import com.wagner.kroiss.api.model.FormaPagamentoModel;
+import com.wagner.kroiss.domain.model.FormaPagamento;
 import com.wagner.kroiss.domain.model.Restaurante;
 import com.wagner.kroiss.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class RestauranteFormaPagamentoController {
     public List<FormaPagamentoModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-        return formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento());
+        return formaPagamentoModelAssembler.toCollectionModel((List<FormaPagamento>) restaurante.getFormasPagamento());
     }
 
     @DeleteMapping("/{formaPagamentoId}")

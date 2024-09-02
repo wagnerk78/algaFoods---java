@@ -3,6 +3,7 @@ package com.wagner.kroiss.domain.service;
 import com.wagner.kroiss.domain.exception.EntidadeEmUsoException;
 import com.wagner.kroiss.domain.exception.GrupoNaoEncontradoException;
 import com.wagner.kroiss.domain.model.Grupo;
+import com.wagner.kroiss.domain.model.Permissao;
 import com.wagner.kroiss.domain.repository.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,6 +20,9 @@ public class CadastroGrupoService {
 
     @Autowired
     private GrupoRepository grupoRepository;
+
+    @Autowired
+    private CadastroPermissaoService cadastroPermissao;
 
     @Transactional
     public Grupo salvar(Grupo grupo) {
@@ -43,5 +47,22 @@ public class CadastroGrupoService {
     public Grupo buscarOuFalhar(Long grupoId) {
         return grupoRepository.findById(grupoId)
                 .orElseThrow(() -> new GrupoNaoEncontradoException(grupoId));
+    }
+
+
+    @Transactional
+    public void desassociarPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+
+        grupo.removerPermissao(permissao);
+    }
+
+    @Transactional
+    public void associarPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+
+        grupo.adicionarPermissao(permissao);
     }
 }
