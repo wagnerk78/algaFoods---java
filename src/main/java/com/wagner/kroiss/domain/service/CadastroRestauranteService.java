@@ -5,6 +5,7 @@ import com.wagner.kroiss.domain.exception.EntidadeEmUsoException;
 import com.wagner.kroiss.domain.exception.RestauranteNaoEncontradoException;
 import com.wagner.kroiss.domain.model.Cidade;
 import com.wagner.kroiss.domain.model.Cozinha;
+import com.wagner.kroiss.domain.model.FormaPagamento;
 import com.wagner.kroiss.domain.model.Restaurante;
 import com.wagner.kroiss.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class CadastroRestauranteService {
 
     @Autowired
     private CadastroCidadeService cadastroCidade;
+
+    @Autowired
+    private CadastroFormaPagamentoService cadastroFormaPagamento;
+
+
 
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
@@ -81,6 +87,22 @@ public class CadastroRestauranteService {
             throw new EntidadeEmUsoException(
                     String.format(MSG_RESTAURANTE_EM_USO, restauranteId));
         }
+    }
+
+    @Transactional
+    public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+
+        restaurante.removerFormaPagamento(formaPagamento);
+    }
+
+    @Transactional
+    public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+
+        restaurante.adicionarFormaPagamento(formaPagamento);
     }
 
 }
