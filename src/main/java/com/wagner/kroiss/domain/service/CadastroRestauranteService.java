@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 
 
 @Service
@@ -58,6 +59,17 @@ public class CadastroRestauranteService {
 
         restauranteAtual.ativar();
     }
+
+    @Transactional
+    public void ativarVarios(List<Long> restaurantesIds) {
+        restaurantesIds.forEach(this::ativar);
+    }
+
+    @Transactional
+    public void desativarVarios(List<Long> restaurantesIds) {
+        restaurantesIds.forEach(this::inativar);
+    }
+
 
 
     @Transactional

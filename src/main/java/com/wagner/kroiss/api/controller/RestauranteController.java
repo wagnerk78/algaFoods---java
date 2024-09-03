@@ -9,6 +9,7 @@ import com.wagner.kroiss.api.model.input.RestauranteInput;
 import com.wagner.kroiss.domain.exception.CidadeNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.CozinhaNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.NegocioException;
+import com.wagner.kroiss.domain.exception.RestauranteNaoEncontradoException;
 import com.wagner.kroiss.domain.model.Restaurante;
 import com.wagner.kroiss.domain.repository.RestauranteRepository;
 import com.wagner.kroiss.domain.service.CadastroRestauranteService;
@@ -101,6 +102,26 @@ public class RestauranteController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void fechar(@PathVariable Long restauranteId) {
         cadastroRestaurante.fechar(restauranteId);
+    }
+
+    @PutMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativarMultiplos(@RequestBody List<Long> restaurantesIds) {
+        try {
+            cadastroRestaurante.ativarVarios(restaurantesIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
+}
+
+    @DeleteMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativarMultiplos(@RequestBody List<Long> restaurantesIds) {
+        try {
+            cadastroRestaurante.desativarVarios(restaurantesIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
 }
