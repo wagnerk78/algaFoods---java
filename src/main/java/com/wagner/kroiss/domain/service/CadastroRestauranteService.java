@@ -3,10 +3,7 @@ package com.wagner.kroiss.domain.service;
 import com.wagner.kroiss.domain.exception.CidadeNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.EntidadeEmUsoException;
 import com.wagner.kroiss.domain.exception.RestauranteNaoEncontradoException;
-import com.wagner.kroiss.domain.model.Cidade;
-import com.wagner.kroiss.domain.model.Cozinha;
-import com.wagner.kroiss.domain.model.FormaPagamento;
-import com.wagner.kroiss.domain.model.Restaurante;
+import com.wagner.kroiss.domain.model.*;
 import com.wagner.kroiss.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -34,6 +31,9 @@ public class CadastroRestauranteService {
 
     @Autowired
     private CadastroFormaPagamentoService cadastroFormaPagamento;
+
+    @Autowired
+    private CadastroUsuarioService cadastroUsuario;
 
 
 
@@ -117,6 +117,22 @@ public class CadastroRestauranteService {
         Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
 
         restauranteAtual.fechar();
+    }
+
+    @Transactional
+    public void desassociarResponsavel(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+
+        restaurante.removerResponsavel(usuario);
+    }
+
+    @Transactional
+    public void associarResponsavel(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+
+        restaurante.adicionarResponsavel(usuario);
     }
 
 }
