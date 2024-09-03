@@ -1,7 +1,9 @@
 package com.wagner.kroiss.core.modelmapper;
 
 import com.wagner.kroiss.api.model.EnderecoModel;
+import com.wagner.kroiss.api.model.input.ItemPedidoInput;
 import com.wagner.kroiss.domain.model.Endereco;
+import com.wagner.kroiss.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,11 +23,17 @@ public class ModelMapperConfig {
                 Endereco.class, EnderecoModel.class
         );
 
+        modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class)
+                .addMappings(mapper -> mapper.skip(ItemPedido::setId));
+
+
         enderecoToEnderecoModelTypeMap.<String>addMapping(
                 enderecoSrc -> enderecoSrc.getCidade().getEstado().getNome(),
         (enderecoModelDest, value) -> enderecoModelDest.getCidade().setEstado(value));
 
         return modelMapper;
     }
+
+
 
 }
