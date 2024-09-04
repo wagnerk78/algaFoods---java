@@ -11,7 +11,9 @@ import com.wagner.kroiss.domain.exception.NegocioException;
 import com.wagner.kroiss.domain.model.Pedido;
 import com.wagner.kroiss.domain.model.Usuario;
 import com.wagner.kroiss.domain.repository.PedidoRepository;
+import com.wagner.kroiss.domain.repository.filter.PedidoFilter;
 import com.wagner.kroiss.domain.service.EmissaoPedidoService;
+import com.wagner.kroiss.infrastructure.Specifications.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +41,8 @@ public class PedidoController {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
     @GetMapping
-    public List<PedidoResumoModel> listar() {
-        List<Pedido> todosPedidos = pedidoRepository.findAll();
+    public List<PedidoResumoModel> pesquisar(PedidoFilter filtro) {
+        List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
 
         return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
     }
