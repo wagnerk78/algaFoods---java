@@ -6,20 +6,26 @@ import com.wagner.kroiss.api.assembler.PedidoResumoModelAssembler;
 import com.wagner.kroiss.api.model.PedidoModel;
 import com.wagner.kroiss.api.model.PedidoResumoModel;
 import com.wagner.kroiss.api.model.input.PedidoInput;
+import com.wagner.kroiss.core.data.PageableTranslator;
 import com.wagner.kroiss.domain.exception.EntidadeNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.NegocioException;
 import com.wagner.kroiss.domain.model.Pedido;
 import com.wagner.kroiss.domain.model.Usuario;
 import com.wagner.kroiss.domain.repository.PedidoRepository;
-import com.wagner.kroiss.domain.repository.filter.PedidoFilter;
+import com.wagner.kroiss.domain.filter.PedidoFilter;
 import com.wagner.kroiss.domain.service.EmissaoPedidoService;
 import com.wagner.kroiss.infrastructure.Specifications.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/pedidos")
@@ -41,10 +47,19 @@ public class PedidoController {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
     @GetMapping
-    public List<PedidoResumoModel> pesquisar(PedidoFilter filtro) {
-        List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
+    public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro,
+                                             @PageableDefault(size = 10) Pageable pageable) {
+        pageable = traduzirPageable(pageable);
+        Page<Pedido> pedidosPage = pedidoRepository.findAll(
+                PedidoSpecs.usandoFiltro(filtro), pageable);
 
-        return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
+        List<PedidoResumoModel> pedidosResumoModel = pedidoResumoModelAssembler
+                .toCollectionModel(pedidosPage.getContent());
+
+        Page<PedidoResumoModel> pedidosResumoModelPage = new PageImpl<>(
+                pedidosResumoModel, pageable, pedidosPage.getTotalElements());
+
+        return pedidosResumoModelPage;
     }
 
     @GetMapping("/{codigo}")
@@ -71,4 +86,18 @@ public class PedidoController {
             throw new NegocioException(e.getMessage(), e);
         }
     }
+
+    private Pageable traduzirPageable(Pageable apiPageable) {
+        var mapeamento = Map.of(
+                "codigo", "codigo",
+                "restaurante.nome", "restaurante.nome",
+                "nomeCliente", "cliente.nome",
+                "valorTotal", "valorTotal"
+        );
+
+        return PageableTranslator.translate(apiPageable, mapeamento);
+    }
+
+
+
 }

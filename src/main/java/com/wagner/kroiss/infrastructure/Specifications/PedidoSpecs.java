@@ -1,7 +1,7 @@
 package com.wagner.kroiss.infrastructure.Specifications;
 
 import com.wagner.kroiss.domain.model.Pedido;
-import com.wagner.kroiss.domain.repository.filter.PedidoFilter;
+import com.wagner.kroiss.domain.filter.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
@@ -11,8 +11,10 @@ public class PedidoSpecs {
 
     public static Specification<Pedido> usandoFiltro(PedidoFilter filtro) {
         return (root, query, builder) -> {
-            root.fetch("restaurante").fetch("cozinha");
-            root.fetch("cliente");
+            if (Pedido.class.equals(query.getResultType())) {
+                root.fetch("restaurante").fetch("cozinha");
+                root.fetch("cliente");
+            }
 
             var predicates = new ArrayList<Predicate>();
 
