@@ -1,4 +1,4 @@
-package com.wagner.kroiss.infrastructure.service;
+package com.wagner.kroiss.infrastructure.service.query;
 
 import com.wagner.kroiss.domain.filter.VendaDiariaFilter;
 import com.wagner.kroiss.domain.model.Pedido;
