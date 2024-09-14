@@ -5,9 +5,10 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
-@Data
+
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Data
 public class FotoProduto {
 
     @EqualsAndHashCode.Include
