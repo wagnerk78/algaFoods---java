@@ -3,7 +3,9 @@ package com.wagner.kroiss.infrastructure.service.storage;
 import com.wagner.kroiss.core.storage.StorageProperties;
 import com.wagner.kroiss.domain.service.FotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.flywaydb.core.internal.util.FileCopyUtils;
+//import org.flywaydb.core.internal.util.FileCopyUtils;
+import org.springframework.util.FileCopyUtils;
+
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Files;
