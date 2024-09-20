@@ -2,6 +2,7 @@ package com.wagner.kroiss.api.controller;
 
 import com.wagner.kroiss.api.assembler.GrupoInputDisassembler;
 import com.wagner.kroiss.api.assembler.GrupoModelAssembler;
+import com.wagner.kroiss.api.controller.openapi.GrupoControllerOpenApi;
 import com.wagner.kroiss.api.model.GrupoModel;
 import com.wagner.kroiss.api.model.input.GrupoInput;
 import com.wagner.kroiss.domain.model.Grupo;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/grupos")
-public class GrupoController {
+public class GrupoController implements GrupoControllerOpenApi {
 
     @Autowired
     private GrupoRepository grupoRepository;
