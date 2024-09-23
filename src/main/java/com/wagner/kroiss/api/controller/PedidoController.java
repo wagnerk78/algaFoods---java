@@ -6,6 +6,7 @@ import com.wagner.kroiss.api.assembler.PedidoResumoModelAssembler;
 import com.wagner.kroiss.api.model.PedidoModel;
 import com.wagner.kroiss.api.model.PedidoResumoModel;
 import com.wagner.kroiss.api.model.input.PedidoInput;
+import com.wagner.kroiss.api.openApi.model.PedidoControllerOpenApi;
 import com.wagner.kroiss.core.data.PageableTranslator;
 import com.wagner.kroiss.domain.exception.EntidadeNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.NegocioException;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,8 +30,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/pedidos")
-public class PedidoController {
+@RequestMapping(path = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PedidoController implements PedidoControllerOpenApi {
+
 
     @Autowired
     private PedidoRepository pedidoRepository;

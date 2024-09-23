@@ -9,6 +9,7 @@ import com.wagner.kroiss.api.assembler.CozinhaInputDisassembler;
 import com.wagner.kroiss.api.assembler.CozinhaModelAssembler;
 import com.wagner.kroiss.api.model.CozinhaModel;
 import com.wagner.kroiss.api.model.input.CozinhaInput;
+import com.wagner.kroiss.api.openApi.controller.CozinhaControllerOpenApi;
 import com.wagner.kroiss.domain.model.Cozinha;
 import com.wagner.kroiss.domain.repository.CozinhaRepository;
 import com.wagner.kroiss.domain.service.CadastroCozinhaService;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(value = "/cozinhas")
-public class CozinhaController {
+@RequestMapping(path = "/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CozinhaController implements CozinhaControllerOpenApi {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;

@@ -6,7 +6,7 @@ import javax.validation.Valid;
 
 import com.wagner.kroiss.api.assembler.CidadeInputDisassembler;
 import com.wagner.kroiss.api.assembler.CidadeModelAssembler;
-import com.wagner.kroiss.api.controller.openapi.CidadeControllerOpenApi;
+import com.wagner.kroiss.api.openApi.controller.CidadeControllerOpenApi;
 import com.wagner.kroiss.api.model.CidadeModel;
 import com.wagner.kroiss.api.model.input.CidadeInput;
 import com.wagner.kroiss.domain.exception.EstadoNaoEncontradoException;
@@ -16,6 +16,7 @@ import com.wagner.kroiss.domain.repository.CidadeRepository;
 import com.wagner.kroiss.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(value = "/cidades")
+@RequestMapping(path= "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired

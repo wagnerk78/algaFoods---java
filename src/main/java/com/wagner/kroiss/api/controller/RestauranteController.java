@@ -8,6 +8,7 @@ import com.wagner.kroiss.api.assembler.RestauranteModelAssembler;
 import com.wagner.kroiss.api.model.RestauranteModel;
 import com.wagner.kroiss.api.model.input.RestauranteInput;
 import com.wagner.kroiss.api.model.view.RestauranteView;
+import com.wagner.kroiss.api.openApi.controller.RestauranteControllerOpenApi;
 import com.wagner.kroiss.domain.exception.CidadeNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.CozinhaNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.NegocioException;
@@ -17,14 +18,15 @@ import com.wagner.kroiss.domain.repository.RestauranteRepository;
 import com.wagner.kroiss.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "/restaurantes")
-public class RestauranteController {
+@RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteController implements RestauranteControllerOpenApi {
 
     @Autowired
     private RestauranteRepository restauranteRepository;
