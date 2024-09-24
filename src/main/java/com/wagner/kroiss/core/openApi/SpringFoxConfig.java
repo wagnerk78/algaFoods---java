@@ -29,6 +29,12 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import javax.annotation.Resource;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -63,15 +69,20 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                         typeResolver.resolve(Page.class, PedidoResumoModel.class),
                         PedidosResumoModelOpenApi.class))
                 .additionalModels(typeResolver.resolve(Problem.class))
-                .ignoredParameterTypes(ServletWebRequest.class)
+                .ignoredParameterTypes(ServletWebRequest.class,
+                        URL.class, URI.class, URLStreamHandler.class, Resource.class,
+                        File.class, InputStream.class)
                 .tags(new Tag("Cidades", "Gerencia as cidades"),
                         new Tag("Grupos", "Gerencia os grupos de usuários"),
                         new Tag("Cozinhas", "Gerencia as cozinhas"),
                         new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
                         new Tag("Pedidos", "Gerencia os pedidos"),
-                        new Tag("Restaurantes", "Gerencia os restaurantes"));
-
-    }
+                        new Tag("Restaurantes", "Gerencia os restaurantes"),
+                        new Tag("Estados", "Gerencia os estados"),
+                        new Tag("Produtos", "Gerencia os produtos de restaurantes"),
+                        new Tag("Usuários", "Gerencia os usuários"),
+                        new Tag("Estatísticas", "Estatísticas da AlgaFood"));
+                            }
 
     private List<Response> globalGetResponseMessages() {
         return Arrays.asList(

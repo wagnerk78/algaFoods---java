@@ -1,13 +1,15 @@
 package com.wagner.kroiss.api.controller;
 
+import com.wagner.kroiss.api.openApi.controller.FluxoPedidoControllerOpenApi;
 import com.wagner.kroiss.domain.service.FluxoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/pedidos/{codigo}")
-public class FluxoPedidoController {
+@RequestMapping(path = "/pedidos/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
+public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 
     @Autowired
     private FluxoPedidoService fluxoPedido;

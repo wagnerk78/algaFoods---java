@@ -6,7 +6,7 @@ import com.wagner.kroiss.api.assembler.PedidoResumoModelAssembler;
 import com.wagner.kroiss.api.model.PedidoModel;
 import com.wagner.kroiss.api.model.PedidoResumoModel;
 import com.wagner.kroiss.api.model.input.PedidoInput;
-import com.wagner.kroiss.api.openApi.model.PedidoControllerOpenApi;
+import com.wagner.kroiss.api.openApi.controller.PedidoControllerOpenApi;
 import com.wagner.kroiss.core.data.PageableTranslator;
 import com.wagner.kroiss.domain.exception.EntidadeNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.NegocioException;

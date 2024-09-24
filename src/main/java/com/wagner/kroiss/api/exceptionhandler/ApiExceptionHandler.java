@@ -208,7 +208,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         if (body == null) {
             body = Problem.builder()
-                    .timestamp(OffsetDateTime.from(LocalDateTime.now()))
+                    .timestamp(OffsetDateTime.now())
                     .title(status.getReasonPhrase())
                     .status(status.value())
                     .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
@@ -229,7 +229,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                         ProblemType problemType, String detail) {
 
         return Problem.builder()
-                .timestamp(OffsetDateTime.from(LocalDateTime.now()))
+                .timestamp(OffsetDateTime.now())
                 .status(status.value())
                 .type(problemType.getUri())
                 .title(problemType.getTitle())

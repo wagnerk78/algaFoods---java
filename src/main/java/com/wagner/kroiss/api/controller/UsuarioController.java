@@ -6,19 +6,21 @@ import com.wagner.kroiss.api.model.UsuarioModel;
 import com.wagner.kroiss.api.model.input.SenhaInput;
 import com.wagner.kroiss.api.model.input.UsuarioComSenhaInput;
 import com.wagner.kroiss.api.model.input.UsuarioInput;
+import com.wagner.kroiss.api.openApi.controller.UsuarioControllerOpenApi;
 import com.wagner.kroiss.domain.model.Usuario;
 import com.wagner.kroiss.domain.repository.UsuarioRepository;
 import com.wagner.kroiss.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/usuarios")
-public class UsuarioController {
+@RequestMapping(path = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
+public class UsuarioController implements UsuarioControllerOpenApi {
 
     @Autowired
     private UsuarioRepository usuarioRepository;

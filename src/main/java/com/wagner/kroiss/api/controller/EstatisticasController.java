@@ -1,5 +1,6 @@
 package com.wagner.kroiss.api.controller;
 
+import com.wagner.kroiss.api.openApi.controller.EstatisticasControllerOpenApi;
 import com.wagner.kroiss.domain.filter.VendaDiariaFilter;
 import com.wagner.kroiss.domain.model.dto.VendaDiaria;
 import com.wagner.kroiss.domain.service.VendaQueryService;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/estatisticas")
-public class EstatisticasController {
+public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     @Autowired
     private VendaQueryService vendaQueryService;
