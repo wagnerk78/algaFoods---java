@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 
 @RestController
 @RequestMapping(path= "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,7 +57,24 @@ public class CidadeController implements CidadeControllerOpenApi {
     public CidadeModel buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 
-        return cidadeModelAssembler.toModel(cidade);
+        CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
+
+        cidadeModel.add(linkTo(CidadeController.class)
+                .slash(cidadeModel.getId()).withSelfRel());
+
+//		cidadeModel.add(Link.of("http://api.algafood.local:8080/cidades/1"));
+
+        cidadeModel.add(linkTo(CidadeController.class)
+                .withRel("cidades"));
+
+//		cidadeModel.add(Link.of("http://api.algafood.local:8080/cidades", "cidades"));
+
+        cidadeModel.getEstado().add(linkTo(EstadoController.class)
+                .slash(cidadeModel.getEstado().getId()).withSelfRel());
+
+//		cidadeModel.getEstado().add(Link.of("http://api.algafood.local:8080/estados/1"));
+
+        return cidadeModel;
     }
 
     @PostMapping
