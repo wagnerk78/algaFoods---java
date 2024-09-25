@@ -15,6 +15,7 @@ import com.wagner.kroiss.domain.model.Cidade;
 import com.wagner.kroiss.domain.repository.CidadeRepository;
 import com.wagner.kroiss.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,7 +48,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     private CidadeInputDisassembler cidadeInputDisassembler;
 
     @GetMapping
-    public List<CidadeModel> listar() {
+    public CollectionModel<CidadeModel> listar() {
         List<Cidade> todasCidades = cidadeRepository.findAll();
 
         return cidadeModelAssembler.toCollectionModel(todasCidades);
@@ -57,24 +58,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     public CidadeModel buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 
-        CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
-
-        cidadeModel.add(linkTo(CidadeController.class)
-                .slash(cidadeModel.getId()).withSelfRel());
-
-//		cidadeModel.add(Link.of("http://api.algafood.local:8080/cidades/1"));
-
-        cidadeModel.add(linkTo(CidadeController.class)
-                .withRel("cidades"));
-
-//		cidadeModel.add(Link.of("http://api.algafood.local:8080/cidades", "cidades"));
-
-        cidadeModel.getEstado().add(linkTo(EstadoController.class)
-                .slash(cidadeModel.getEstado().getId()).withSelfRel());
-
-//		cidadeModel.getEstado().add(Link.of("http://api.algafood.local:8080/estados/1"));
-
-        return cidadeModel;
+        return cidadeModelAssembler.toModel(cidade);
     }
 
     @PostMapping
