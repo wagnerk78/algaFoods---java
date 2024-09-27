@@ -3,6 +3,7 @@ package com.wagner.kroiss.api.assembler;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.wagner.kroiss.api.AlgaLinks;
 import com.wagner.kroiss.api.controller.EstadoController;
 import com.wagner.kroiss.api.model.EstadoModel;
 import com.wagner.kroiss.domain.model.Estado;
@@ -21,6 +22,9 @@ public class EstadoModelAssembler
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     public EstadoModelAssembler() {
         super(EstadoController.class, EstadoModel.class);
     }
@@ -30,7 +34,7 @@ public class EstadoModelAssembler
         EstadoModel estadoModel = createModelWithId(estado.getId(), estado);
         modelMapper.map(estado, estadoModel);
 
-        estadoModel.add(linkTo(EstadoController.class).withRel("estados"));
+        estadoModel.add(algaLinks.linkToEstados("estados"));
 
         return estadoModel;
     }

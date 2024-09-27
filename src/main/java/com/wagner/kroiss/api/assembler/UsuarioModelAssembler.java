@@ -1,5 +1,6 @@
 package com.wagner.kroiss.api.assembler;
 
+import com.wagner.kroiss.api.AlgaLinks;
 import com.wagner.kroiss.api.controller.UsuarioController;
 import com.wagner.kroiss.api.controller.UsuarioGrupoController;
 import com.wagner.kroiss.api.model.UsuarioModel;
@@ -24,6 +25,9 @@ public class UsuarioModelAssembler
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     public UsuarioModelAssembler() {
         super(UsuarioController.class, UsuarioModel.class);
     }
@@ -33,10 +37,9 @@ public class UsuarioModelAssembler
         UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
         modelMapper.map(usuario, usuarioModel);
 
-        usuarioModel.add(linkTo(UsuarioController.class).withRel("usuarios"));
+        usuarioModel.add(algaLinks.linkToUsuarios("usuarios"));
 
-        usuarioModel.add(linkTo(methodOn(UsuarioGrupoController.class)
-                .listar(usuario.getId())).withRel("grupos-usuario"));
+        usuarioModel.add(algaLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
 
         return usuarioModel;
     }

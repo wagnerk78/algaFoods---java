@@ -1,5 +1,6 @@
 package com.wagner.kroiss.api.assembler;
 
+import com.wagner.kroiss.api.AlgaLinks;
 import com.wagner.kroiss.api.controller.CidadeController;
 import com.wagner.kroiss.api.controller.EstadoController;
 import com.wagner.kroiss.api.model.CidadeModel;
@@ -20,6 +21,9 @@ public class CidadeModelAssembler
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     public CidadeModelAssembler() {
         super(CidadeController.class, CidadeModel.class);
     }
@@ -30,11 +34,9 @@ public class CidadeModelAssembler
 
         modelMapper.map(cidade, cidadeModel);
 
-        cidadeModel.add(linkTo(methodOn(CidadeController.class)
-                .listar()).withRel("cidades"));
+        cidadeModel.add(algaLinks.linkToCidades("cidades"));
 
-        cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class)
-                .buscar(cidadeModel.getEstado().getId())).withSelfRel());
+        cidadeModel.getEstado().add(algaLinks.linkToEstado(cidadeModel.getEstado().getId()));
 
         return cidadeModel;
     }

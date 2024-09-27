@@ -1,5 +1,6 @@
 package com.wagner.kroiss.api.controller;
 
+import com.wagner.kroiss.api.AlgaLinks;
 import com.wagner.kroiss.api.assembler.UsuarioModelAssembler;
 import com.wagner.kroiss.api.model.UsuarioModel;
 import com.wagner.kroiss.api.openApi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
@@ -24,11 +25,16 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
     @Autowired
     private UsuarioModelAssembler usuarioModelAssembler;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     @GetMapping
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-        return usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis()).removeLinks();
+        return usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis())
+                .removeLinks()
+                .add(algaLinks.linkToResponsaveisRestaurante(restauranteId));
     }
 
     @DeleteMapping("/{usuarioId}")
