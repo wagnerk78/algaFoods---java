@@ -4,8 +4,8 @@ package com.wagner.kroiss.api.openApi.controller;
 import com.wagner.kroiss.api.exceptionhandler.Problem;
 import com.wagner.kroiss.api.model.FormaPagamentoModel;
 import io.swagger.annotations.*;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Restaurantes")
 public interface RestauranteFormaPagamentoControllerOpenApi {
@@ -14,7 +14,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
     @ApiResponses({
             @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    List<FormaPagamentoModel> listar(
+    CollectionModel<FormaPagamentoModel> listar(
             @ApiParam(value = "ID do restaurante", example = "1", required = true)
             Long restauranteId);
 
@@ -24,7 +24,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
             @ApiResponse(code = 404, message = "Restaurante ou forma de pagamento não encontrado",
                     response = Problem.class)
     })
-    void desassociar(
+    ResponseEntity<Void> desassociar(
             @ApiParam(value = "ID do restaurante", example = "1", required = true)
             Long restauranteId,
 

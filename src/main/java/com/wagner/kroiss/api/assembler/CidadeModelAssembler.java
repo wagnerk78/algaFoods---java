@@ -41,10 +41,16 @@ public class CidadeModelAssembler
         return cidadeModel;
     }
 
+//    @Override
+//    public CollectionModel<CidadeModel> toCollectionModel(Iterable<? extends Cidade> entities) {
+//        return super.toCollectionModel(entities)
+//                .add(linkTo(CidadeController.class).withSelfRel());
+//    }
+
+
     @Override
     public CollectionModel<CidadeModel> toCollectionModel(Iterable<? extends Cidade> entities) {
         return super.toCollectionModel(entities)
-                .add(linkTo(CidadeController.class).withSelfRel());
+                .add(algaLinks.linkToCidades());
     }
-
 }

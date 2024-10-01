@@ -9,6 +9,7 @@ import com.wagner.kroiss.domain.model.FormaPagamento;
 import com.wagner.kroiss.domain.repository.FormaPagamentoRepository;
 import com.wagner.kroiss.domain.service.CadastroFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,7 +40,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request) {
+    public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request)  {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
         String eTag = "0";
@@ -56,8 +57,8 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 
         List<FormaPagamento> todasFormasPagamentos = formaPagamentoRepository.findAll();
 
-        List<FormaPagamentoModel> formasPagamentosModel = formaPagamentoModelAssembler
-                .toCollectionModel(todasFormasPagamentos);
+        CollectionModel<FormaPagamentoModel> formasPagamentosModel =
+                formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamentos);
 
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())

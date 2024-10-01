@@ -15,7 +15,10 @@ public class AlgaLinks {
             new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
             new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
 
-    public Link linkToPedidos() {
+    public static final TemplateVariables PROJECAO_VARIABLES = new TemplateVariables(
+            new TemplateVariable("projecao", TemplateVariable.VariableType.REQUEST_PARAM));
+
+    public Link linkToPedidos(String rel) {
         TemplateVariables filtroVariables = new TemplateVariables(
                 new TemplateVariable("clienteId", TemplateVariable.VariableType.REQUEST_PARAM),
                 new TemplateVariable("restauranteId", TemplateVariable.VariableType.REQUEST_PARAM),
@@ -25,7 +28,7 @@ public class AlgaLinks {
         String pedidosUrl = linkTo(PedidoController.class).toUri().toString();
 
         return new Link(UriTemplate.of(pedidosUrl,
-                PAGINACAO_VARIABLES.concat(filtroVariables)), "pedidos");
+                PAGINACAO_VARIABLES.concat(filtroVariables)), rel);
     }
 
     public Link linkToConfirmacaoPedido(String codigoPedido, String rel) {
@@ -50,6 +53,21 @@ public class AlgaLinks {
 
     public Link linkToRestaurante(Long restauranteId) {
         return linkToRestaurante(restauranteId, IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToRestaurantes(String rel) {
+        String restaurantesUrl = linkTo(RestauranteController.class).toUri().toString();
+
+        return new Link(UriTemplate.of(restaurantesUrl, PROJECAO_VARIABLES), rel);
+    }
+
+    public Link linkToRestaurantes() {
+        return linkToRestaurantes(IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToRestauranteFormasPagamento(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteFormaPagamentoController.class)
+                .listar(restauranteId)).withRel(rel);
     }
 
     public Link linkToUsuario(Long usuarioId, String rel) {
@@ -78,13 +96,13 @@ public class AlgaLinks {
         return linkToGruposUsuario(usuarioId, IanaLinkRelations.SELF.value());
     }
 
-    public Link linkToResponsaveisRestaurante(Long restauranteId, String rel) {
+    public Link linkToRestauranteResponsaveis(Long restauranteId, String rel) {
         return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
                 .listar(restauranteId)).withRel(rel);
     }
 
     public Link linkToResponsaveisRestaurante(Long restauranteId) {
-        return linkToResponsaveisRestaurante(restauranteId, IanaLinkRelations.SELF.value());
+        return linkToRestauranteResponsaveis(restauranteId, IanaLinkRelations.SELF.value());
     }
 
     public Link linkToFormaPagamento(Long formaPagamentoId, String rel) {
@@ -148,4 +166,51 @@ public class AlgaLinks {
         return linkToCozinhas(IanaLinkRelations.SELF.value());
     }
 
+    public Link linkToCozinha(Long cozinhaId, String rel) {
+        return linkTo(methodOn(CozinhaController.class)
+                .buscar(cozinhaId)).withRel(rel);
+    }
+
+    public Link linkToCozinha(Long cozinhaId) {
+        return linkToCozinha(cozinhaId, IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToRestauranteAbertura(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteController.class)
+                .abrir(restauranteId)).withRel(rel);
+    }
+
+    public Link linkToRestauranteFechamento(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteController.class)
+                .fechar(restauranteId)).withRel(rel);
+    }
+
+    public Link linkToRestauranteInativacao(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteController.class)
+                .inativar(restauranteId)).withRel(rel);
+    }
+
+    public Link linkToRestauranteAtivacao(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteController.class)
+                .ativar(restauranteId)).withRel(rel);
+    }
+
+    public Link linkToRestauranteFormasPagamento(Long restauranteId) {
+        return linkToRestauranteFormasPagamento(restauranteId, IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToRestauranteFormaPagamentoDesassociacao(
+            Long restauranteId, Long formaPagamentoId, String rel) {
+
+        return linkTo(methodOn(RestauranteFormaPagamentoController.class)
+                .desassociar(restauranteId, formaPagamentoId)).withRel(rel);
+    }
+
+    public Link linkToFormasPagamento(String rel) {
+        return linkTo(FormaPagamentoController.class).withRel(rel);
+    }
+
+    public Link linkToFormasPagamento() {
+        return linkToFormasPagamento(IanaLinkRelations.SELF.value());
+    }
 }
