@@ -1,11 +1,13 @@
 package com.wagner.kroiss.api.controller;
 
+import com.wagner.kroiss.api.AlgaLinks;
 import com.wagner.kroiss.api.openApi.controller.EstatisticasControllerOpenApi;
 import com.wagner.kroiss.domain.filter.VendaDiariaFilter;
 import com.wagner.kroiss.domain.model.dto.VendaDiaria;
 import com.wagner.kroiss.domain.service.VendaQueryService;
 import com.wagner.kroiss.domain.service.VendaReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,9 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     @Autowired
     private VendaReportService vendaReportService;
+
+    @Autowired
+    private AlgaLinks algaLinks;
 
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
@@ -47,4 +52,17 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
                 .body(bytesPdf);
     }
 
+    @Override
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public EstatisticasModel estatisticas() {
+        var estatisticasModel = new EstatisticasModel();
+
+        estatisticasModel.add(algaLinks.linkToEstatisticasVendasDiarias("vendas-diarias"));
+
+        return estatisticasModel;
+    }
+
+
+    public static class EstatisticasModel extends RepresentationModel<EstatisticasModel> {
+    }
 }

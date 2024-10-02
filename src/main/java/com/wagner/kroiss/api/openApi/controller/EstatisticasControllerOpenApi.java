@@ -1,9 +1,12 @@
 package com.wagner.kroiss.api.openApi.controller;
 
+import com.wagner.kroiss.api.controller.EstatisticasController;
 import com.wagner.kroiss.domain.filter.VendaDiariaFilter;
 import com.wagner.kroiss.domain.model.dto.VendaDiaria;
 import io.swagger.annotations.*;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -29,4 +32,7 @@ public interface EstatisticasControllerOpenApi {
     ResponseEntity<byte[]> consultarVendasDiariasPdf(
             VendaDiariaFilter filtro,
             String timeOffset);
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    EstatisticasController.EstatisticasModel estatisticas();
 }
