@@ -3,8 +3,8 @@ package com.wagner.kroiss.core.openApi;
 
 import com.fasterxml.classmate.TypeResolver;
 import com.wagner.kroiss.api.exceptionhandler.Problem;
-import com.wagner.kroiss.api.model.*;
-import com.wagner.kroiss.api.openApi.model.*;
+import com.wagner.kroiss.api.v1.model.*;
+import com.wagner.kroiss.api.v1.openApi.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;

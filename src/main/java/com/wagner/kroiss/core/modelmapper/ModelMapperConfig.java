@@ -1,7 +1,7 @@
 package com.wagner.kroiss.core.modelmapper;
 
-import com.wagner.kroiss.api.model.EnderecoModel;
-import com.wagner.kroiss.api.model.input.ItemPedidoInput;
+import com.wagner.kroiss.api.v1.model.EnderecoModel;
+import com.wagner.kroiss.api.v1.model.input.ItemPedidoInput;
 import com.wagner.kroiss.domain.model.Endereco;
 import com.wagner.kroiss.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
