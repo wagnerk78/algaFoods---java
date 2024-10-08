@@ -9,7 +9,7 @@ import com.wagner.kroiss.api.v1.assembler.CidadeModelAssembler;
 import com.wagner.kroiss.api.v1.openApi.controller.CidadeControllerOpenApi;
 import com.wagner.kroiss.api.v1.model.CidadeModel;
 import com.wagner.kroiss.api.v1.model.input.CidadeInput;
-import com.wagner.kroiss.core.web.AlgaMediaTypes;
+//import com.wagner.kroiss.core.web.AlgaMediaTypes;
 import com.wagner.kroiss.domain.exception.EstadoNaoEncontradoException;
 import com.wagner.kroiss.domain.exception.NegocioException;
 import com.wagner.kroiss.domain.model.Cidade;
@@ -100,7 +100,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 //
 //}
 @RestController
-@RequestMapping(path = "/cidades")
+@RequestMapping(path = "/v1/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired
@@ -116,7 +116,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     private CidadeInputDisassembler cidadeInputDisassembler;
 
     @Override
-    @GetMapping(produces = AlgaMediaTypes.V1_APPLICATION_JSON_VALUE)
+    @GetMapping
     public CollectionModel<CidadeModel> listar() {
         List<Cidade> todasCidades = cidadeRepository.findAll();
 
@@ -124,7 +124,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
     @Override
-    @GetMapping(path = "/{cidadeId}", produces = AlgaMediaTypes.V1_APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{cidadeId}")
     public CidadeModel buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 
@@ -132,7 +132,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
     @Override
-    @PostMapping(produces = AlgaMediaTypes.V1_APPLICATION_JSON_VALUE)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
         try {
@@ -147,7 +147,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
     @Override
-    @PutMapping(path = "/{cidadeId}", produces = AlgaMediaTypes.V1_APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{cidadeId}")
     public CidadeModel atualizar(@PathVariable Long cidadeId,
                                  @RequestBody @Valid CidadeInput cidadeInput) {
         try {

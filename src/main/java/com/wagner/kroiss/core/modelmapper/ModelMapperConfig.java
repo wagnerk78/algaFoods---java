@@ -2,6 +2,8 @@ package com.wagner.kroiss.core.modelmapper;
 
 import com.wagner.kroiss.api.v1.model.EnderecoModel;
 import com.wagner.kroiss.api.v1.model.input.ItemPedidoInput;
+import com.wagner.kroiss.api.v2.model.input.CidadeInputV2;
+import com.wagner.kroiss.domain.model.Cidade;
 import com.wagner.kroiss.domain.model.Endereco;
 import com.wagner.kroiss.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
@@ -14,6 +16,10 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         var modelMapper = new ModelMapper();
+
+
+        modelMapper.createTypeMap(CidadeInputV2.class, Cidade.class)
+                .addMappings(mapper -> mapper.skip(Cidade::setId));
 
 //		modelMapper.createTypeMap(Restaurante.class, RestauranteModel.class)
 //			.addMapping(Restaurante::getTaxaFrete, RestauranteModel::setPrecoFrete);
