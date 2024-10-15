@@ -9,6 +9,7 @@ import com.wagner.kroiss.api.v1.model.input.PedidoInput;
 import com.wagner.kroiss.api.v1.openApi.controller.PedidoControllerOpenApi;
 import com.wagner.kroiss.core.data.PageWrapper;
 import com.wagner.kroiss.core.data.PageableTranslator;
+import com.wagner.kroiss.core.security.AlgaSecurity;
 import com.wagner.kroiss.domain.exception.EntidadeNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.NegocioException;
 import com.wagner.kroiss.domain.model.Pedido;
@@ -53,6 +54,9 @@ public class PedidoController implements PedidoControllerOpenApi {
     @Autowired
     private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro,
                                                    @PageableDefault(size = 10) Pageable pageable) {
@@ -79,9 +83,9 @@ public class PedidoController implements PedidoControllerOpenApi {
         try {
             Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 
-            // TODO pegar usuário autenticado
+
             novoPedido.setCliente(new Usuario());
-            novoPedido.getCliente().setId(1L);
+            novoPedido.getCliente().setId(algaSecurity.getUsuarioId());
 
             novoPedido = emissaoPedido.emitir(novoPedido);
 
