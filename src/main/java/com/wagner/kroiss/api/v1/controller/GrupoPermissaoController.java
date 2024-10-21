@@ -4,6 +4,7 @@ import com.wagner.kroiss.api.v1.AlgaLinks;
 import com.wagner.kroiss.api.v1.assembler.PermissaoModelAssembler;
 import com.wagner.kroiss.api.v1.model.PermissaoModel;
 import com.wagner.kroiss.api.v1.openApi.controller.GrupoPermissaoControllerOpenApi;
+import com.wagner.kroiss.core.security.CheckSecurity;
 import com.wagner.kroiss.domain.model.Grupo;
 import com.wagner.kroiss.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     @Autowired
     private AlgaLinks algaLinks;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping
     public CollectionModel<PermissaoModel> listar(@PathVariable Long grupoId) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
@@ -45,6 +47,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
         return permissoesModel;
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @DeleteMapping("/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
@@ -53,6 +56,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PutMapping("/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {

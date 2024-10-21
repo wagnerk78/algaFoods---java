@@ -5,6 +5,7 @@ import com.wagner.kroiss.api.v1.assembler.GrupoModelAssembler;
 import com.wagner.kroiss.api.v1.openApi.controller.GrupoControllerOpenApi;
 import com.wagner.kroiss.api.v1.model.GrupoModel;
 import com.wagner.kroiss.api.v1.model.input.GrupoInput;
+import com.wagner.kroiss.core.security.CheckSecurity;
 import com.wagner.kroiss.domain.model.Grupo;
 import com.wagner.kroiss.domain.repository.GrupoRepository;
 import com.wagner.kroiss.domain.service.CadastroGrupoService;
@@ -33,6 +34,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     @Autowired
     private GrupoInputDisassembler grupoInputDisassembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping
     public CollectionModel<GrupoModel> listar() {
         List<Grupo> todosGrupos = grupoRepository.findAll();
@@ -40,6 +42,7 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toCollectionModel(todosGrupos);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping("/{grupoId}")
     public GrupoModel buscar(@PathVariable Long grupoId) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
@@ -47,6 +50,7 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toModel(grupo);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
@@ -57,6 +61,7 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toModel(grupo);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PutMapping("/{grupoId}")
     public GrupoModel atualizar(@PathVariable Long grupoId,
                                 @RequestBody @Valid GrupoInput grupoInput) {
@@ -69,6 +74,7 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toModel(grupoAtual);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @DeleteMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long grupoId) {

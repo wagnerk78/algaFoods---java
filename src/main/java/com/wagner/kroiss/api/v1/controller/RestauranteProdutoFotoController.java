@@ -4,6 +4,7 @@ import com.wagner.kroiss.api.v1.assembler.FotoProdutoModelAssembler;
 import com.wagner.kroiss.api.v1.model.FotoProdutoModel;
 import com.wagner.kroiss.api.v1.model.input.FotoProdutoInput;
 import com.wagner.kroiss.api.v1.openApi.controller.RestauranteProdutoFotoControllerOpenApi;
+import com.wagner.kroiss.core.security.CheckSecurity;
 import com.wagner.kroiss.domain.exception.EntidadeNaoEncontradaException;
 import com.wagner.kroiss.domain.model.FotoProduto;
 import com.wagner.kroiss.domain.model.Produto;
@@ -41,6 +42,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     @Autowired
     private FotoStorageService fotoStorage;
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId,
                                           @PathVariable Long produtoId,
@@ -62,7 +64,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         return fotoProdutoModelAssembler.toModel(fotoSalva);
     }
 
-
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public FotoProdutoModel buscar(@PathVariable Long restauranteId,
                                    @PathVariable Long produtoId) {
@@ -70,6 +72,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
         return fotoProdutoModelAssembler.toModel(fotoProduto);
     }
+
 
     @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> servir(@PathVariable Long restauranteId,
@@ -100,6 +103,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Long restauranteId,

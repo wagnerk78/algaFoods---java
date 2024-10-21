@@ -10,6 +10,7 @@ import com.wagner.kroiss.api.v1.openApi.controller.CidadeControllerOpenApi;
 import com.wagner.kroiss.api.v1.model.CidadeModel;
 import com.wagner.kroiss.api.v1.model.input.CidadeInput;
 //import com.wagner.kroiss.core.web.AlgaMediaTypes;
+import com.wagner.kroiss.core.security.CheckSecurity;
 import com.wagner.kroiss.domain.exception.EstadoNaoEncontradoException;
 import com.wagner.kroiss.domain.exception.NegocioException;
 import com.wagner.kroiss.domain.model.Cidade;
@@ -115,6 +116,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     @Autowired
     private CidadeInputDisassembler cidadeInputDisassembler;
 
+    @CheckSecurity.Cidades.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<CidadeModel> listar() {
@@ -123,6 +125,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         return cidadeModelAssembler.toCollectionModel(todasCidades);
     }
 
+    @CheckSecurity.Cidades.PodeConsultar
     @Override
     @GetMapping(path = "/{cidadeId}")
     public CidadeModel buscar(@PathVariable Long cidadeId) {
@@ -131,6 +134,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         return cidadeModelAssembler.toModel(cidade);
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -146,6 +150,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @Override
     @PutMapping(path = "/{cidadeId}")
     public CidadeModel atualizar(@PathVariable Long cidadeId,
@@ -163,6 +168,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @Override
     @DeleteMapping("/{cidadeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -4,6 +4,7 @@ import com.wagner.kroiss.api.v1.AlgaLinks;
 import com.wagner.kroiss.api.v1.assembler.UsuarioModelAssembler;
 import com.wagner.kroiss.api.v1.model.UsuarioModel;
 import com.wagner.kroiss.api.v1.openApi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
+import com.wagner.kroiss.core.security.CheckSecurity;
 import com.wagner.kroiss.domain.model.Restaurante;
 import com.wagner.kroiss.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
     @Autowired
     private AlgaLinks algaLinks;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -45,6 +47,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
         return usuariosModel;
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
@@ -53,6 +56,8 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
         return ResponseEntity.noContent().build();
     }
 
+
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {

@@ -10,6 +10,7 @@ import com.wagner.kroiss.api.v1.openApi.controller.PedidoControllerOpenApi;
 import com.wagner.kroiss.core.data.PageWrapper;
 import com.wagner.kroiss.core.data.PageableTranslator;
 import com.wagner.kroiss.core.security.AlgaSecurity;
+import com.wagner.kroiss.core.security.CheckSecurity;
 import com.wagner.kroiss.domain.exception.EntidadeNaoEncontradaException;
 import com.wagner.kroiss.domain.exception.NegocioException;
 import com.wagner.kroiss.domain.model.Pedido;
@@ -57,6 +58,7 @@ public class PedidoController implements PedidoControllerOpenApi {
     @Autowired
     private AlgaSecurity algaSecurity;
 
+    @CheckSecurity.Pedidos.PodePesquisar
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro,
                                                    @PageableDefault(size = 10) Pageable pageable) {
@@ -70,6 +72,7 @@ public class PedidoController implements PedidoControllerOpenApi {
         return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
     }
 
+    @CheckSecurity.Pedidos.PodeBuscar
     @GetMapping("/{codigo}")
     public PedidoModel buscar(@PathVariable String codigo) {
         Pedido pedido = emissaoPedido.buscarOuFalhar(codigo);
@@ -77,6 +80,7 @@ public class PedidoController implements PedidoControllerOpenApi {
         return pedidoModelAssembler.toModel(pedido);
     }
 
+    @CheckSecurity.Pedidos.PodeCriar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {

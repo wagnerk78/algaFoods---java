@@ -1,6 +1,7 @@
 package com.wagner.kroiss.api.v1.controller;
 
 import com.wagner.kroiss.api.v1.openApi.controller.FluxoPedidoControllerOpenApi;
+import com.wagner.kroiss.core.security.CheckSecurity;
 import com.wagner.kroiss.domain.service.FluxoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
     @Autowired
     private FluxoPedidoService fluxoPedido;
 
+    @CheckSecurity.Pedidos.PodeGerenciarPedidos
     @Override
     @PutMapping("/confirmacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -24,6 +26,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Pedidos.PodeGerenciarPedidos
     @Override
     @PutMapping("/cancelamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -33,6 +36,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Pedidos.PodeGerenciarPedidos
     @Override
     @PutMapping("/entrega")
     @ResponseStatus(HttpStatus.NO_CONTENT)

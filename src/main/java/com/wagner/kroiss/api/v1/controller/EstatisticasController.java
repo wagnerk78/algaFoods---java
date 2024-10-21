@@ -2,6 +2,7 @@ package com.wagner.kroiss.api.v1.controller;
 
 import com.wagner.kroiss.api.v1.AlgaLinks;
 import com.wagner.kroiss.api.v1.openApi.controller.EstatisticasControllerOpenApi;
+import com.wagner.kroiss.core.security.CheckSecurity;
 import com.wagner.kroiss.domain.filter.VendaDiariaFilter;
 import com.wagner.kroiss.domain.model.dto.VendaDiaria;
 import com.wagner.kroiss.domain.service.VendaQueryService;
@@ -31,12 +32,15 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
     @Autowired
     private AlgaLinks algaLinks;
 
+
+    @CheckSecurity.Estatisticas.PodeConsultar
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
                                                     @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
         return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
     }
 
+    @CheckSecurity.Estatisticas.PodeConsultar
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filtro,
                                                             @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {

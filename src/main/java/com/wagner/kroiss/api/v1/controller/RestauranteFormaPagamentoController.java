@@ -4,6 +4,7 @@ import com.wagner.kroiss.api.v1.AlgaLinks;
 import com.wagner.kroiss.api.v1.assembler.FormaPagamentoModelAssembler;
 import com.wagner.kroiss.api.v1.model.FormaPagamentoModel;
 import com.wagner.kroiss.api.v1.openApi.controller.RestauranteFormaPagamentoControllerOpenApi;
+import com.wagner.kroiss.core.security.CheckSecurity;
 import com.wagner.kroiss.domain.model.Restaurante;
 import com.wagner.kroiss.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     @Autowired
     private AlgaLinks algaLinks;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<FormaPagamentoModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -52,6 +54,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
         return formasPagamentoModel;
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
@@ -60,6 +63,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {

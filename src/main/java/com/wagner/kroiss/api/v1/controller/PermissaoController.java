@@ -3,6 +3,7 @@ package com.wagner.kroiss.api.v1.controller;
 import com.wagner.kroiss.api.v1.assembler.PermissaoModelAssembler;
 import com.wagner.kroiss.api.v1.model.PermissaoModel;
 import com.wagner.kroiss.api.v1.openApi.controller.PermissaoControllerOpenApi;
+import com.wagner.kroiss.core.security.CheckSecurity;
 import com.wagner.kroiss.domain.model.Permissao;
 import com.wagner.kroiss.domain.repository.PermissaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class PermissaoController implements PermissaoControllerOpenApi {
     @Autowired
     private PermissaoModelAssembler permissaoModelAssembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<PermissaoModel> listar() {
