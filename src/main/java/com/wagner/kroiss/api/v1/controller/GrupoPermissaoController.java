@@ -4,6 +4,7 @@ import com.wagner.kroiss.api.v1.AlgaLinks;
 import com.wagner.kroiss.api.v1.assembler.PermissaoModelAssembler;
 import com.wagner.kroiss.api.v1.model.PermissaoModel;
 import com.wagner.kroiss.api.v1.openApi.controller.GrupoPermissaoControllerOpenApi;
+import com.wagner.kroiss.core.security.AlgaSecurity;
 import com.wagner.kroiss.core.security.CheckSecurity;
 import com.wagner.kroiss.domain.model.Grupo;
 import com.wagner.kroiss.domain.service.CadastroGrupoService;
@@ -28,21 +29,29 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
+    @Override
     @GetMapping
     public CollectionModel<PermissaoModel> listar(@PathVariable Long grupoId) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
 
         CollectionModel<PermissaoModel> permissoesModel
                 = permissaoModelAssembler.toCollectionModel(grupo.getPermissoes())
-                .removeLinks()
-                .add(algaLinks.linkToGrupoPermissoes(grupoId))
-                .add(algaLinks.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
+                .removeLinks();
 
-        permissoesModel.getContent().forEach(permissaoModel -> {
-            permissaoModel.add(algaLinks.linkToGrupoPermissaoDesassociacao(
-                    grupoId, permissaoModel.getId(), "desassociar"));
-        });
+        permissoesModel.add(algaLinks.linkToGrupoPermissoes(grupoId));
+
+        if (algaSecurity.podeEditarUsuariosGruposPermissoes()) {
+            permissoesModel.add(algaLinks.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
+
+            permissoesModel.getContent().forEach(permissaoModel -> {
+                permissaoModel.add(algaLinks.linkToGrupoPermissaoDesassociacao(
+                        grupoId, permissaoModel.getId(), "desassociar"));
+            });
+        }
 
         return permissoesModel;
     }
